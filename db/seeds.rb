@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Producer.destroy_all
+Producer.create(name: "Asus", description: "Computer producer")
+Producer.create(name: "Lenovo", description: "Laptop producer")
+Producer.create(name: "Microsoft", description: "Computer and mobile phones producer")
