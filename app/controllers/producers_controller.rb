@@ -6,17 +6,16 @@ class ProducersController < ApplicationController
   def index
     page = index_params[:page] ? index_params[:page].to_i : 1
     offset = (page - 1) * ProducersHelper::PRODUCER_PAGE_SIZE
-    producers = Producer
-                  .limit(ProducersHelper::PRODUCER_PAGE_SIZE)
-                  .offset(offset)
-                  .search_name(index_params[:name])
-                  .search_description(index_params[:description])
-                  .order(:name)
+    producers = helpers.find_producers(index_params[:name], index_params[:description])
+                       .limit(ProducersHelper::PRODUCER_PAGE_SIZE)
+                       .offset(offset)
+    logger.warn(helpers.find_producers(index_params[:name], index_params[:description]).count)
+    pages = helpers.pages(index_params[:name], index_params[:description])
 
     render json: {
       items: producers.length,
       page: page,
-      pages: helpers.pages,
+      pages: pages,
       data: producers
     }, status: 200
   end
@@ -32,7 +31,7 @@ class ProducersController < ApplicationController
     producer = Producer.new(create_params)
 
     if producer.save
-      render json: producer, status: 200
+      render json: producer, status: :ok
     else
       render json: { errors: producer.errors.full_messages }, status: :unprocessable_entity
     end
@@ -54,7 +53,7 @@ class ProducersController < ApplicationController
     producer = Producer.find(destroy_params[:id])
 
     producer.destroy
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private
@@ -67,7 +66,7 @@ class ProducersController < ApplicationController
   private
 
   def producer_not_found(exception)
-    render json: { errors: ["Producer with the given id does not exist."] }, status: 404
+    render json: { errors: ["Producer with the given id does not exist."] }, status: :not_found
   end
 
   # Only allow a list of trusted parameters through.
