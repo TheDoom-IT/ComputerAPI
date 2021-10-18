@@ -4,26 +4,23 @@ class ProducersController < ApplicationController
 
   # GET /producers or /producers.json
   def index
-    page = index_params[:page] ? index_params[:page].to_i : 1
-    offset = (page - 1) * ProducersHelper::PRODUCER_PAGE_SIZE
     producers = helpers.find_producers(index_params[:name], index_params[:description])
                        .limit(ProducersHelper::PRODUCER_PAGE_SIZE)
                        .offset(offset)
-    logger.warn(helpers.find_producers(index_params[:name], index_params[:description]).count)
-    pages = helpers.pages(index_params[:name], index_params[:description])
+    pages = helpers.pages_producers(index_params[:name], index_params[:description])
 
     render json: {
       items: producers.length,
       page: page,
       pages: pages,
       data: producers
-    }, status: 200
+    }, status: :ok
   end
 
   # GET /producers/1 or /producers/1.json
   def show
     producer = Producer.find(show_params[:id])
-    render json: producer
+    render json: producer, status: :ok
   end
 
   # POST /producers or /producers.json
@@ -91,4 +88,16 @@ class ProducersController < ApplicationController
     params.permit(:id)
   end
 
+  def page
+    page = index_params[:page].to_i.abs
+    if page.zero?
+      1
+    else
+      page
+    end
+  end
+
+  def offset
+    (page - 1) * ProducersHelper::PRODUCER_PAGE_SIZE
+  end
 end

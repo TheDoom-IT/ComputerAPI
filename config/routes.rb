@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
-  # resources :producers
+  # computers
+  get '/computers', to: 'computers#index'
+  get '/computers/:id', to: 'computers#show'
+  post '/computers', to: 'computers#create'
+  put '/computers/:id', to: 'computers#update'
+  delete '/computers/:id', to: 'computers#destroy'
+
+  # producers
   get '/producers', to: 'producers#index'
   get '/producers/:id', to: 'producers#show'
   post '/producers', to: 'producers#create'

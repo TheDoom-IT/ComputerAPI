@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_131831) do
+ActiveRecord::Schema.define(version: 2021_10_15_055916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "computers", force: :cascade do |t|
+    t.string "name"
+    t.bigint "producer_id"
+    t.decimal "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["producer_id"], name: "index_computers_on_producer_id"
+  end
 
   create_table "producers", force: :cascade do |t|
     t.string "name"
@@ -22,4 +31,5 @@ ActiveRecord::Schema.define(version: 2021_10_12_131831) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "computers", "producers"
 end
