@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2021_10_15_055916) do
   create_table "computers", force: :cascade do |t|
     t.string "name"
     t.bigint "producer_id"
-    t.decimal "price"
+    t.decimal "price", precision: 8, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["producer_id"], name: "index_computers_on_producer_id"

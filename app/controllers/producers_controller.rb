@@ -49,18 +49,13 @@ class ProducersController < ApplicationController
   def destroy
     producer = Producer.find(destroy_params[:id])
 
-    producer.destroy
-    head :ok
+    if Computer.where(producer_id: producer.id).count.zero?
+      producer.destroy
+      head :ok
+    else
+      render json: { errors: ['Producer is used by some computer. Delete computers first.'] }, status: :bad_request
+    end
   end
-
-  private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_producer
-    @producer = Producer.find(show_params[:id])
-  end
-
-  private
 
   def producer_not_found(exception)
     render json: { errors: ["Producer with the given id does not exist."] }, status: :not_found
