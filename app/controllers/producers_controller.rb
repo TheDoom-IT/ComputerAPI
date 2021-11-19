@@ -57,8 +57,8 @@ class ProducersController < ApplicationController
     end
   end
 
-  def producer_not_found(exception)
-    render json: { errors: ["Producer with the given id does not exist."] }, status: :not_found
+  def producer_not_found(_exception)
+    render json: { errors: ['Producer with the given id does not exist.'] }, status: :not_found
   end
 
   # Only allow a list of trusted parameters through.

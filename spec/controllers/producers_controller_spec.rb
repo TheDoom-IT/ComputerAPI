@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ProducersController, type: :controller do
-
   let!(:producer) { create(:producer) }
   let!(:producer2) { create(:producer2) }
 
@@ -50,7 +49,6 @@ RSpec.describe ProducersController, type: :controller do
       expect(body['page']).to eq(1)
       expect(body['pages']).to eq(1)
       expect(body['data'][0]['name']).to eq(producer.name)
-
     end
 
     it 'description parameter. Should return two producers' do
@@ -88,7 +86,7 @@ RSpec.describe ProducersController, type: :controller do
   end
 
   context 'create' do
-    it 'should create one producer and return it' do
+    it 'creates one producer and return it' do
       post :create, params: { name: 'new name', description: 'description' }
 
       expect(response).to have_http_status(:ok)
@@ -102,7 +100,7 @@ RSpec.describe ProducersController, type: :controller do
       expect(JSON(response.body)['description']).to eq('description')
     end
 
-    it 'should not create new producer. Name is already taken' do
+    it 'does not create new producer. Name is already taken' do
       post :create, params: { name: producer.name, description: producer.description }
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -111,7 +109,7 @@ RSpec.describe ProducersController, type: :controller do
   end
 
   context 'update' do
-    it 'should update first producer' do
+    it 'updates first producer' do
       put :update, params: { id: producer.id, name: 'new name', description: 'new description' }
 
       expect(response).to have_http_status(:ok)
@@ -125,7 +123,7 @@ RSpec.describe ProducersController, type: :controller do
       expect(JSON(response.body)['description']).to eq('new description')
     end
 
-    it 'should not update producer. Invalid id' do
+    it 'does not update producer. Invalid id' do
       put :update, params: { id: 'invalid id', name: 'new name', description: 'new description' }
 
       expect(response).to have_http_status(:not_found)
@@ -134,7 +132,7 @@ RSpec.describe ProducersController, type: :controller do
   end
 
   context 'destroy' do
-    it 'should delete first producer' do
+    it 'deletes first producer' do
       delete :destroy, params: { id: producer2.id }
       expect(response).to have_http_status(:ok)
 
@@ -146,7 +144,7 @@ RSpec.describe ProducersController, type: :controller do
       expect(response).to have_http_status(:not_found)
     end
 
-    it 'should not delete producer. Invalid id' do
+    it 'does not delete producer. Invalid id' do
       delete :destroy, params: { id: 'invalid id' }
       expect(response).to have_http_status(:not_found)
 

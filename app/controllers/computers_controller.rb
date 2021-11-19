@@ -4,16 +4,11 @@ class ComputersController < ApplicationController
 
   # GET /computers or /computers.json
   def index
-    computers = helpers.find_computers(index_params[:name],
-                                       index_params[:producer_name],
-                                       index_params[:min_price],
-                                       index_params[:max_price])
-                       .limit(ComputersHelper::COMPUTER_PAGE_SIZE)
-                       .offset(offset)
-    pages = helpers.pages_computers(index_params[:name],
-                                    index_params[:producer_name],
-                                    index_params[:min_price],
-                                    index_params[:max_price])
+    param = [index_params[:name], index_params[:producer_name], index_params[:min_price], index_params[:max_price]]
+
+    computers = helpers.find_computers(*param).limit(ComputersHelper::COMPUTER_PAGE_SIZE).offset(offset)
+
+    pages = helpers.pages_computers(*param)
     render json: {
       items: computers.length,
       page: page,
@@ -30,7 +25,6 @@ class ComputersController < ApplicationController
 
   # POST /computers or /computers.json
   def create
-
     Producer.transaction do
       producer = Producer.find_by(name: create_params[:producer_name])
 

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ComputersController, type: :controller do
-
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ComputersController. Be sure to keep this updated too.
@@ -135,7 +134,7 @@ RSpec.describe ComputersController, type: :controller do
   end
 
   context 'post' do
-    it 'should create one computer and return it' do
+    it 'creates one computer and return it' do
       post :create, params: { name: 'new name', price: 123, producer_name: producer2.name }
 
       body = JSON(response.body)
@@ -148,7 +147,7 @@ RSpec.describe ComputersController, type: :controller do
       expect(Producer.count).to eq(2)
     end
 
-    it 'should create one computer and one producer' do
+    it 'creates one computer and one producer' do
       post :create, params: { name: computer.name, price: 100, producer_name: 'new producer' }
 
       body = JSON(response.body)
@@ -194,17 +193,17 @@ RSpec.describe ComputersController, type: :controller do
 
   context 'delete #destroy' do
     it 'valid id. Should destroy one computer' do
-      expect {
+      expect do
         delete :destroy, params: { id: computer.id }
-      }.to change(Computer, :count).by(-1)
+      end.to change(Computer, :count).by(-1)
 
       expect(response).to have_http_status(:ok)
     end
 
     it 'invalid id. Should return an error' do
-      expect {
+      expect do
         delete :destroy, params: { id: 'invalid id' }
-      }.to change(Computer, :count).by(0)
+      end.to change(Computer, :count).by(0)
 
       expect(response).to have_http_status(:not_found)
     end

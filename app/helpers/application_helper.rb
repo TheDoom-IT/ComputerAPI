@@ -1,6 +1,5 @@
 module ApplicationHelper
-
   def nil_or_empty?(str)
-    str.nil? || str.empty?
+    str.blank?
   end
 end

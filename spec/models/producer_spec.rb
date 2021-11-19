@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Producer, type: :model do
   context 'test' do
     it 'empty' do
-
       expect(1).to eq(1)
     end
   end
