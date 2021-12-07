@@ -1,6 +1,6 @@
 class ComputersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :computer_not_found
-  skip_before_action :verify_authenticity_token
+  before_action :authenticate, only: %i[create update destroy]
 
   # GET /computers or /computers.json
   def index
@@ -98,5 +98,13 @@ class ComputersController < ApplicationController
 
   def offset
     (page - 1) * ComputersHelper::COMPUTER_PAGE_SIZE
+  end
+
+  private
+
+  def authenticate
+    user = User.find_by(key: params[:key])
+
+    render json: { errors: ['Invalid api key'] }, status: :unauthorized if user.nil?
   end
 end

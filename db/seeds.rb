@@ -13,3 +13,5 @@ Producer.create(name: 'Microsoft', description: 'Computer and mobile phones prod
 
 Computer.create(name: 'Computer 1', producer_id: p1.id, price: 123.11)
 Computer.create(name: 'Computer 2', producer_id: p2.id, price: 500)
+
+User.create(name: 'dawid', email: 'dawid@dawid.com', password: 'mypass', password_confirmation: 'mypass', key: 'my_key')

@@ -1,6 +1,6 @@
 class ProducersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :producer_not_found
-  skip_before_action :verify_authenticity_token
+  before_action :authenticate, only: %i[create update destroy]
 
   # GET /producers or /producers.json
   def index
@@ -94,5 +94,13 @@ class ProducersController < ApplicationController
 
   def offset
     (page - 1) * ProducersHelper::PRODUCER_PAGE_SIZE
+  end
+
+  private
+
+  def authenticate
+    user = User.find_by(key: params[:key])
+
+    render json: { errors: ['Invalid api key'] }, status: :unauthorized if user.nil?
   end
 end

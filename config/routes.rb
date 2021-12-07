@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/signup', to: 'users#new'
+  resources :users
   # computers
   get '/computers', to: 'computers#index'
   get '/computers/:id', to: 'computers#show'

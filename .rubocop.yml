@@ -36,6 +36,9 @@ Style/FrozenStringLiteralComment:
 RSpec/MultipleExpectations:
   Enabled: false
 
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
+
 RSpec/ExampleLength:
   Max: 10
 
